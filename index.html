@@ -82,8 +82,13 @@
 
         <p>Data Usage: 
             <span class="highlight">
-                {{ (user.used_traffic / 1024 / 1024) | round(2) }} MB /
-                {{ (user.data_limit / 1024 / 1024 / 1024) | round(2) }} GB
+                {% set used = (user.used_traffic or 0) / 1024 / 1024 %}
+                {% if user.data_limit is not none %}
+                    {{ used | round(2) }} MB /
+                    {{ (user.data_limit / 1024 / 1024 / 1024) | round(2) }} GB
+                {% else %}
+                    {{ used | round(2) }} MB / ∞
+                {% endif %}
             </span>
         </p>
 
